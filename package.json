@@ -1,0 +1,9 @@
+{
+  "name": "video-streamer-apps",
+  "version": "1.0.0",
+  "description": "A collection of front end applications for streaming video.",
+  "main": "index.js",
+  "author": "Chris Harrington",
+  "license": "MIT",
+  "private": false
+}

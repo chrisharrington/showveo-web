@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "baseUrl": ".",
+      "jsx": "react",
+      "paths": {
+          "@web/*": ["./*"],
+          "@lib/*": ["../lib/*"]
+      },
+      "sourceMap": true
+    },
+    "include": [
+      "**/*.ts",
+      "**/*.tsx",
+    ],
+    "exclude": [
+      "node_modules"
+    ],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  }
