@@ -3,29 +3,35 @@ import * as ReactDOM from 'react-dom';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import { StringExtensions } from '@lib/extensions';
-import { Movie, Show, Media, Season } from '@lib/models';
+import { Movie, Show, Media, Season, PlayOptions, Device, Castable, PlayableType } from '@lib/models';
 import MovieService from '@lib/data/movies';
-import ShowService from '@lib/data/shows'
+import ShowService from '@lib/data/shows';
 
 import Header from '@web/components/header';
+import Cast from '@web/components/cast';
 import { Navigator, Views } from '@web/views';
 import PlayerView from '@web/views/player';
 import MediaView from '@web/views/media';
 import ShowView from '@web/views/show';
+import MovieDetailsView from '@web/views/movie-details';
 
 import './app.scss';
 
 interface AppState {
     movies: Movie[];
     shows: Show[];
-    show: Show;
+    backdrop: string;
+    cast: Castable | null;
 }
 
 class App extends React.Component<{}, AppState> {
+    cast: Cast;
+
     state = {
         movies: [],
         shows: [],
-        show: new Show()
+        backdrop: '',
+        cast: null
     }
 
     async componentDidMount() {
@@ -40,22 +46,28 @@ class App extends React.Component<{}, AppState> {
             <Router history={Navigator.history}>
                 <Header />
 
-                <Route exact path={[Views.Show, Views.Season]}>
-                    {this.state.show.backdrop && <div className='backdrop' style={{ backgroundImage: `url(${this.state.show.backdrop})`}}>
+                <Route exact path={[Views.Show, Views.Season, Views.MovieDetails]}>
+                    {this.state.backdrop && <div className='backdrop' style={{ backgroundImage: `url(${this.state.backdrop})`}}>
                         <div className='backdrop-shader'></div>
                     </div>}
                 </Route>
 
                 <Route render={({ location }) => (
                     <Switch location={location}>
+                        <Route exact path={[Views.MoviePlayer, Views.EpisodePlayer]} component={PlayerView} />
+
                         <Route exact path={Views.Movies}>
                             <MediaView
                                 media={this.state.movies}
-                                onMediaClicked={(movie: Movie) => this.onNavigateToMedia(Views.MoviePlayer, movie)}
+                                onMediaClicked={(movie: Movie) => this.onNavigateToMedia(Views.MovieDetails, movie)}
                             />
                         </Route>
 
-                        <Route exact path={[Views.MoviePlayer, Views.EpisodePlayer]} component={PlayerView} />
+                        <Route path={Views.MovieDetails} render={(props) => <MovieDetailsView
+                            {...props}
+                            onMovieLoaded={(movie: Movie) => this.setState({ backdrop: movie.backdrop })}
+                            onMoviePlayed={(movie: Movie, options: PlayOptions) => this.onPlayMovie(movie, options)}
+                        />} />
 
                         <Route exact path={Views.Shows}>
                             <MediaView
@@ -66,7 +78,7 @@ class App extends React.Component<{}, AppState> {
 
                         <Route path={Views.Show} render={(props) => <ShowView
                             {...props}
-                            onShowLoaded={(show: Show) => this.setState({ show })}
+                            onShowLoaded={(show: Show) => this.setState({ backdrop: show.backdrop })}
                             onSeasonClicked={(show: Show, season: Season) => this.onNavigateToSeason(show, season)}
                         />} />
 
@@ -76,12 +88,27 @@ class App extends React.Component<{}, AppState> {
                     </Switch>
                 )} />
             </Router>
+
+            <Cast
+                ref={c => this.cast = c}
+            />
         </div>;
     }
 
-    onNavigateToMedia(view: string, media: Media) {
+    async onPlayMovie(movie: Movie, options: PlayOptions) {
+        if (options.device.isThisDevice) {
+            movie.name = StringExtensions.toKebabCase(movie.name);
+            Navigator.navigate(Views.MoviePlayer, movie, {
+                resume: options.isResume ? '1' : '0',
+                subtitles: options.isSubtitled ? '1' : '0'
+            });
+        } else
+            await this.cast.cast(new Castable(movie, options, PlayableType.Movie));
+    }
+
+    onNavigateToMedia(view: string, media: Media, query?: any) {
         media.name = StringExtensions.toKebabCase(media.name);
-        Navigator.navigate(view, media);
+        Navigator.navigate(view, media, query);
     }
 
     onNavigateToSeason(show: Show, season: Season) {

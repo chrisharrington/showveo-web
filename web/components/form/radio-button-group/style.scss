@@ -1,0 +1,53 @@
+@import 'variables.scss';
+
+.form.radio-button-group {
+    $height: 50px;
+
+    border: solid 2px $base-colour;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+
+    .radio-button {
+        height: $height;
+        position: relative;
+        font-family: $button-font;
+        font-size: 20px;
+        display: block;
+        width: 100%;
+        padding: 0 15px;
+        border-top: solid 2px $base-colour;
+        transition: background-color $transition-duration linear;
+        cursor: pointer;
+        text-transform: uppercase;
+        overflow: hidden;
+        position: relative;
+
+        &:first-child {
+            border-top: none;
+        }
+
+        &:hover {
+            background-color: $darker-base-colour;
+        }
+
+        div, span {
+            @include vertical-centre($height);
+        }
+
+        span {
+            position: absolute;
+            z-index: 2;
+        }
+    }
+
+    .radio-button-overlay {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        width: 100%;
+        height: $height;
+        background-color: $base-colour;
+        transition: transform $transition-duration ease-in-out;
+    }
+}

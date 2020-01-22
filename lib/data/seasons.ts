@@ -8,19 +8,21 @@ interface SeasonData {
     episodes: Episode[];
 }
 
-export default class SeasonService extends BaseService {
-    static async getByShowName(show: string) : Promise<Season[]> {
+class SeasonService extends BaseService {
+    async getByShowName(show: string) : Promise<Season[]> {
         const data = await this.get(`${Config.ApiUrl}/shows/${show}/seasons`);
         return data.map(this.build);
     }
 
-    static async getByShowNameAndNumber(show: string, number: number) : Promise<SeasonData> {
+    async getByShowNameAndNumber(show: string, number: number) : Promise<SeasonData> {
         return await this.get(`${Config.ApiUrl}/shows/${show}/${number}`);
     }
 
-    private static build(data: any) : Season {
+    private build(data: any) : Season {
         const show = new Season();
         Object.keys(data).forEach(k => show[k] = data[k]);
         return show;
     }
 }
+
+export default new SeasonService();

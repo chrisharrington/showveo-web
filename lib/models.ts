@@ -15,6 +15,21 @@ export enum CastState {
     Connected = "Connected"
 }
 
+export enum PlayableType {
+    Movie,
+    Episode
+}
+
+export enum CastAction {
+    Launch = 'launch',
+    Play = 'play',
+    Pause = 'pause',
+    Stop = 'stop',
+    Seek = 'seek',
+    Subtitles = 'subtitles',
+    Status = 'status'
+}
+
 export interface Playable {
     _id: string;
     runtime: number;
@@ -93,5 +108,66 @@ export class Episode implements Playable {
 
     async saveProgress(time: number) : Promise<void> {
         await EpisodeService.saveProgress(this._id, time);
+    }
+}
+
+export class Device {
+    id: string;
+    name: string;
+    host: string;
+    isThisDevice: boolean;
+
+    constructor() {
+        this.isThisDevice = false;
+    }
+
+    static thisDevice() : Device {
+        const device = new Device();
+        device.id = '';
+        device.name = 'This Device';
+        device.host = '';
+        device.isThisDevice = true;
+        return device;
+    }
+}
+
+export class PlayOptions {
+    device: Device;
+    isResume: boolean;
+    isSubtitled: boolean;
+
+    constructor(device: Device, isResume: boolean, isSubtitled: boolean) {
+        this.device = device;
+        this.isResume = isResume;
+        this.isSubtitled = isSubtitled;
+    }
+}
+
+export class Castable {
+    playable: Playable;
+    options: PlayOptions;
+    type: PlayableType;
+
+    constructor(playable: Playable, options: PlayOptions, type: PlayableType) {
+        this.playable = playable;
+        this.options = options;
+        this.type = type;
+    }
+}
+
+export class CastMessage {
+    action: CastAction;
+    host: string;
+    movieId: string | null;
+    episodeId: string | null;
+    isSubtitled: boolean;
+    isResume: boolean;
+    url: string;
+    time: number;
+    duration: number;
+
+    constructor(action: CastAction, host: string) {
+        this.action = action;
+        this.host = host;
     }
 }

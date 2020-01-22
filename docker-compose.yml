@@ -7,7 +7,7 @@ services:
     container_name: video-streamer-web
     restart: unless-stopped
     ports:
-      - 80:8080
+      - 8080:8080
       - 1606:1606
     volumes:
       - ./:/app

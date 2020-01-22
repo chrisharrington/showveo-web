@@ -6,9 +6,9 @@
       "baseUrl": ".",
       "jsx": "react",
       "paths": {
-          "@web/*": ["./apps/web/*"],
-          "@native/*": ["./apps/native/*"],
-          "@lib/*": ["./apps/lib/*"]
+          "@web/*": ["./web/*"],
+          "@native/*": ["./native/*"],
+          "@lib/*": ["./lib/*"]
       },
       "sourceMap": true
     },
@@ -18,8 +18,7 @@
       "../../node_modules/@types/**/*.d.ts"
     ],
     "exclude": [
-      "node_modules",
-      "./apps/**/*"
+      "node_modules"
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true,

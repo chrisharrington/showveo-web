@@ -1,0 +1,22 @@
+@import 'variables.scss';
+
+.form.select-button {
+    @include vertical-centre(60px);
+    border-radius: 3px;
+    border: solid 1px $base-colour;
+    color: white;
+    width: 100%;
+    transition: background-color 150ms linear;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0);
+    text-align: center;
+    text-transform: uppercase;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    &.select-button-selected {
+        background-color: $base-colour;
+    }
+}

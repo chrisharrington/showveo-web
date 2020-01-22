@@ -1,5 +1,5 @@
 export default class BaseService {
-    static async get(url: string, params?: any) : Promise<any> {
+    async get(url: string, params?: any) : Promise<any> {
         const response = await fetch(`${url}${buildQuery(params)}`, {
             method: 'GET',
             mode: 'cors'
@@ -11,7 +11,7 @@ export default class BaseService {
         return await response.json();
     }
 
-    static async post(url: string, params?: any, headers?: any) {
+    async post(url: string, params?: any, headers?: any) {
         headers = headers || {};
         headers['Content-Type'] = 'application/json';
         return fetch(url, {

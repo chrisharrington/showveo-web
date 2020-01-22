@@ -25,7 +25,7 @@ module.exports = {
             '.jsx'
         ],
         modules: [
-            '../../node_modules',
+            './node_modules',
             __dirname,
             path.resolve(__dirname, '../lib')
         ]
@@ -46,7 +46,7 @@ module.exports = {
                     {
                         loader: 'ts-loader',
                         options: {
-                            configFile: path.join(__dirname, './tsconfig.json')
+                            configFile: path.join(__dirname, '../tsconfig.json')
                         }
                     }
                 ]

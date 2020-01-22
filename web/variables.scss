@@ -1,11 +1,17 @@
 $font-size: 18px;
 $font-colour: white;
-$header-font: 'Josefin Sans';
-$body-font: 'Open Sans';
+
+$body-font: 'Lato';
+$header-font: 'Roboto Slab';
+$button-font: 'Oswald';
+
+$transition-duration: 150ms;
 
 $background-colour: #444;
 $base-colour: #0398fc;
-$dark-base-colour: darken($base-colour, 25%);
+$dark-base-colour: darken($base-colour, 15%);
+$darker-base-colour: darken($base-colour, 25%);
+$darkest-base-colour: darken($base-colour, 35%);
 $hover-colour: darken($base-colour, 12%);
 
 $header-height: 60px;

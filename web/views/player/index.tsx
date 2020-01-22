@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as QueryString from 'query-string';
 
 import './style.scss';
 
@@ -32,8 +33,8 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
         loading: true,
         error: false,
         playing: true,
-        currentTime: this.formatTime(0),
-        maxTime: this.formatTime(0),
+        currentTime: StringExtensions.formatTime(0),
+        maxTime: StringExtensions.formatTime(0),
         progress: 0,
         subtitles: false
     }
@@ -49,17 +50,21 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
             else
                 throw new Error(`Unable to derive media type: ${params}`);
 
+            const query = QueryString.parse(location.search);
             this.setState({
-                playable
+                playable,
+                progress: 0
             }, () => {
                 this.video.load();
 
                 if (playable.progress) {
-                    this.video.currentTime = playable.progress;
+                    this.video.currentTime = query.resume === '1' ? playable.progress : 0;
                     this.setState({
                         progress: playable.progress / playable.runtime * 100
                     });
                 }
+
+                this.onToggleSubtiles(query.subtitles === '1');
             });
 
             this.saveProgressHandler = this.saveProgress.bind(this);
@@ -115,7 +120,7 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
                         <span>{this.state.currentTime} / {this.state.maxTime}</span>
                     </div>
                     <div className='actions'>
-                        {playable.subtitlesStatus === Status.Fulfilled && <i className={`fas fa-closed-captioning fa-lg ${this.state.subtitles && 'active'}`} onClick={() => this.onToggleSubtiles()}></i>}
+                        {playable.subtitlesStatus === Status.Fulfilled && <i className={`fas fa-closed-captioning fa-lg ${this.state.subtitles && 'active'}`} onClick={() => this.onToggleSubtiles(!this.state.subtitles)}></i>}
                     </div>
                 </div>
                 <div className='seek' onClick={e => this.onSeek(e)}>
@@ -127,13 +132,13 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
         </div>;
     }
 
-    private onToggleSubtiles() {
+    private onToggleSubtiles(enabled: boolean) {
         const track = this.video.textTracks[0];
         if (!track)
             return;
 
         this.setState({
-            subtitles: !this.state.subtitles
+            subtitles: enabled
         }, () => {
             track.mode = this.state.subtitles ? 'showing' : 'hidden';
         });
@@ -141,8 +146,8 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
 
     private onTimeUpdate() {
         this.setState({
-            currentTime: this.formatTime(this.video.currentTime),
-            maxTime: this.formatTime(this.video.duration),
+            currentTime: StringExtensions.formatTime(this.video.currentTime),
+            maxTime: StringExtensions.formatTime(this.video.duration),
             progress: this.video.currentTime / this.video.duration * 100
         });
     }
@@ -181,16 +186,6 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
             return;
 
         this.setState({ loading });
-    }
-
-    private formatTime(total: number) : string {
-        if (isNaN(total))
-            return '00:00:00';
-        
-        const seconds = Math.floor(total%60),
-            minutes = Math.floor(total/60%60),
-            hours = Math.floor(total/60/60%60);
-        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 
     private async saveProgress() {
