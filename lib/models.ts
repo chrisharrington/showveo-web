@@ -20,16 +20,6 @@ export enum PlayableType {
     Episode
 }
 
-export enum CastAction {
-    Launch = 'launch',
-    Play = 'play',
-    Pause = 'pause',
-    Stop = 'stop',
-    Seek = 'seek',
-    Subtitles = 'subtitles',
-    Status = 'status'
-}
-
 export interface Playable {
     _id: string;
     runtime: number;
@@ -152,22 +142,5 @@ export class Castable {
         this.playable = playable;
         this.options = options;
         this.type = type;
-    }
-}
-
-export class CastMessage {
-    action: CastAction;
-    host: string;
-    movieId: string | null;
-    episodeId: string | null;
-    isSubtitled: boolean;
-    isResume: boolean;
-    url: string;
-    time: number;
-    duration: number;
-
-    constructor(action: CastAction, host: string) {
-        this.action = action;
-        this.host = host;
     }
 }

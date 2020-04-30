@@ -6,7 +6,7 @@ export default class Poster extends React.Component<{ media: Media, width: numbe
     render() {
         const media = this.props.media;
         return <div className='poster' style={{ width: this.props.width }}>
-            <img style={{ height: (this.props.width-25)*1.5 }} src={media.poster} alt={media.name} onClick={() => this.props.onClick()} />
+            <img style={{ height: (this.props.width)*1.5 }} src={media.poster} alt={media.name} onClick={() => this.props.onClick()} />
         </div>;
     }
 }

@@ -24,7 +24,6 @@
     "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^0.0.5",
     "@types/jest": "^24.0.24",
-    "@types/react-native": "^0.60.25",
     "@types/react-native-navigation": "^2.0.0",
     "@types/react-native-orientation": "^5.0.1",
     "@types/react-native-video": "^5.0.0",

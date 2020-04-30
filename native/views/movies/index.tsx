@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableHighlight } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
-import Orientation from 'react-native-orientation';
+import * as Orientation from 'react-native-orientation';
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 
 import MovieService from '@lib/data/movies';

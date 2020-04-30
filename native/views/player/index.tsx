@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Video from 'react-native-video-controls';
-import Orientation from 'react-native-orientation';
+import * as Orientation from 'react-native-orientation';
 
 import { Playable } from '@lib/models';
 

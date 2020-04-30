@@ -25,7 +25,7 @@ export default class List extends React.Component<IMediaListProps, IMediaListSta
         const width = document.documentElement.scrollWidth - PADDING;
         const count = Math.round(width/BASE_POSTER_WIDTH);
         this.setState({
-            posterWidth: width/count
+            posterWidth: width/count - PADDING
         });
     }
 

@@ -1,3 +1,3 @@
 FROM node:latest
 WORKDIR /app
-CMD npm rebuild node-sass && yarn web-dev
+CMD npm rebuild node-sass && yarn web:dev

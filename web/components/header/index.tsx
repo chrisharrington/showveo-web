@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 import './style.scss';
 
-export default class Header extends React.Component {
+export default class Header extends React.Component<{ backdrop: boolean }> {
     render() {
-        return <header>
+        return <header className={this.props.backdrop ? 'with-backdrop' : 'no-backdrop'}>
             <ul>
                 <li>
                     <h5>

@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./web/Dockerfile
-    container_name: video-streamer-web
+    container_name: showveo-web
     restart: unless-stopped
     ports:
       - 8080:8080

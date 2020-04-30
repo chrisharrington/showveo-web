@@ -5,7 +5,7 @@ header {
     width: 100%;
     position: fixed;
     z-index: 2;
-    background-color: #222;
+    
     top: 0;
 
     ul {
@@ -24,6 +24,7 @@ header {
 
         a {
             @include vertical-centre($header-height);
+
             text-decoration: none;
             color: $font-colour;
             width: 100%;
@@ -31,11 +32,23 @@ header {
             padding: 0 25px;
             cursor: pointer;
             width: 100%;
-            transition: background-color linear 150ms;
+            transition: background-color 150ms linear, transform 150ms linear;
+        }
+    }
 
-            &:hover {
-                background-color: #333;
-            }
+    &.with-backdrop {
+        background-color: $translucent-colour;
+
+        a:hover {
+            background-color: rgba(100, 100, 100, 0.35);
+        }
+    }
+
+    &.no-backdrop {
+        background-color: #333;
+
+        a:hover {
+            background-color: #222;
         }
     }
 }

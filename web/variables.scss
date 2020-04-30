@@ -1,18 +1,20 @@
 $font-size: 18px;
 $font-colour: white;
 
-$body-font: 'Lato';
-$header-font: 'Roboto Slab';
-$button-font: 'Oswald';
+$body-font: 'Assistant';
+$header-font: 'Assistant';
+$button-font: 'Assistant';
 
 $transition-duration: 150ms;
 
-$background-colour: #444;
+$background-colour: #222;
 $base-colour: #0398fc;
 $dark-base-colour: darken($base-colour, 15%);
 $darker-base-colour: darken($base-colour, 25%);
 $darkest-base-colour: darken($base-colour, 35%);
 $hover-colour: darken($base-colour, 12%);
+$translucent-colour: rgba(100, 100, 100, 0.3);
+$translucent-hover-colour: rgba(100, 100, 100, 0.5);
 
 $header-height: 60px;
 $sidebar-width: 240px;
@@ -25,4 +27,13 @@ $spacing-small: 15px;
     height: $height;
     line-height: $height;
     vertical-align: middle;
+}
+
+@mixin transparent() {
+    background-color: $translucent-colour;
+    transition: background-color 150ms linear, transform 150ms linear;
+
+    &:hover {
+        background-color: $translucent-hover-colour;
+    }
 }

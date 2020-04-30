@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Castable, Device, CastMessage } from '@lib/models';
+import { Castable, Device } from '@lib/models';
 import DeviceService from '@lib/data/devices';
 
 import './style.scss';
@@ -37,13 +37,7 @@ export default class Cast extends React.Component<CastProps, CastState> {
 
     async cast(castable: Castable) {
         this.setState({ castable, status: Status.Loading });
-        await DeviceService.cast(castable, (message: CastMessage) => {
-            this.setState({
-                time: message.time,
-                duration: message.duration,
-                progress: message.time / message.duration * 100
-            });
-        });
+        await DeviceService.cast(castable);
         this.setState({ status: Status.Playing });
     }
 

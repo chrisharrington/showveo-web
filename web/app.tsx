@@ -44,13 +44,18 @@ class App extends React.Component<{}, AppState> {
     render() {
         return <div>
             <Router history={Navigator.history}>
-                <Header />
+                <Switch>
+                    <Route exact path={[Views.Show, Views.Season, Views.MovieDetails]}>
+                        <Header backdrop={true} />
 
-                <Route exact path={[Views.Show, Views.Season, Views.MovieDetails]}>
-                    {this.state.backdrop && <div className='backdrop' style={{ backgroundImage: `url(${this.state.backdrop})`}}>
-                        <div className='backdrop-shader'></div>
-                    </div>}
-                </Route>
+                        {this.state.backdrop && <div className='backdrop' style={{ backgroundImage: `url(${this.state.backdrop})`}}>
+                            <div className='backdrop-shader'></div>
+                        </div>}
+                    </Route>
+                    <Route>
+                        <Header backdrop={false} />
+                    </Route>
+                </Switch>
 
                 <Route render={({ location }) => (
                     <Switch location={location}>

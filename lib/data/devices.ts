@@ -1,62 +1,38 @@
-import * as io from 'socket.io-client';
-
-import { Device, Castable, CastMessage, CastAction } from '@lib/models';
+import { Device, Castable, PlayableType } from '@lib/models';
 import Config from '@lib/config';
 
 import BaseService from './base';
 
-const CAST_MESSAGE = 'cast';
-
 class DeviceService extends BaseService {
-    private socket: SocketIOClient.Socket;
-    private heartbeats: any;
-
-    constructor() {
-        super();
-
-        this.heartbeats = {};
-        this.socket = io(Config.ApiUrl);
-
-        this.socket.on(CAST_MESSAGE, (message: CastMessage) => {
-            switch (message.action) {
-                case CastAction.Status:
-                    const handler = this.heartbeats[message.host];
-                    if (handler)
-                        handler(message);
-                    break;
-                default:
-                    throw new Error(`No handler for cast message: ${message.action}`);
-            }
-        });
-    }
-
     async all() : Promise<Device[]> {
         const devices = await this.get(`${Config.ApiUrl}/devices`);
         return [Device.thisDevice()].concat(devices.map((device: Device) => this.build(device)));
     }
 
-    async cast(castable: Castable, onHeartbeat: (message: CastMessage) => void) {
-        const message = new CastMessage(CastAction.Launch, castable.options.device.host);
-        message.movieId = castable.playable._id;
-        message.isSubtitled = castable.options.isSubtitled;
-        message.isResume = castable.options.isResume;
-        message.host = castable.options.device.host;
-        message.url = castable.playable.video();
-        this.socket.emit(CAST_MESSAGE, message);
+    async cast(castable: Castable) : Promise<void> {
+        const params: any = {
+            url: castable.playable.video(),
+            host: castable.options.device.host
+        };
 
-        this.heartbeats[castable.options.device.host] = onHeartbeat;
+        if (castable.type === PlayableType.Movie)
+            params.movieId = castable.playable._id;
+        else if (castable.type === PlayableType.Episode)
+            params.episodeId = castable.playable._id;
+
+        await this.post(`${Config.ApiUrl}/devices/cast`, params);
     }
 
     async pause(device: Device) {
-        this.socket.emit(CAST_MESSAGE, new CastMessage(CastAction.Pause, device.host));
+        await this.post(`${Config.ApiUrl}/devices/pause`, { host: device.host });
     }
 
     async play(device: Device) {
-        this.socket.emit(CAST_MESSAGE, new CastMessage(CastAction.Play, device.host));
+        await this.post(`${Config.ApiUrl}/devices/play`, { host: device.host });
     }
 
     async stop(device: Device) {
-        this.socket.emit(CAST_MESSAGE, new CastMessage(CastAction.Stop, device.host));
+        await this.post(`${Config.ApiUrl}/devices/stop`, { host: device.host });
     }
 
     private build(data: any) : Device {
