@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { createBrowserHistory, History as RouterHistory } from 'history';
 
 import { StringExtensions } from '@lib/extensions';
-import { Movie, Show, Media, Season, PlayOptions, Device, Castable, PlayableType } from '@lib/models';
+import { Movie, Show, Media, Season, PlayOptions, Castable, PlayableType, Navigation } from '@lib/models';
 import MovieService from '@lib/data/movies';
 import ShowService from '@lib/data/shows';
 
@@ -22,6 +23,7 @@ interface AppState {
     shows: Show[];
     backdrop: string;
     cast: Castable | null;
+    selected: Navigation;
 }
 
 class App extends React.Component<{}, AppState> {
@@ -31,13 +33,19 @@ class App extends React.Component<{}, AppState> {
         movies: [],
         shows: [],
         backdrop: '',
-        cast: null
+        cast: null,
+        selected: Navigation.Movies
     }
 
     async componentDidMount() {
+        Navigator.history.listen((location) => {
+            this.setState({ selected: location.pathname.substring(1).split('/')[0] as Navigation })
+        });
+
         this.setState({
             movies: await MovieService.getAll(),
             shows: await ShowService.getAll(),
+            selected: Navigator.history.location.pathname.substring(1).split('/')[0] as Navigation
         });
     }
 
@@ -46,14 +54,20 @@ class App extends React.Component<{}, AppState> {
             <Router history={Navigator.history}>
                 <Switch>
                     <Route exact path={[Views.Show, Views.Season, Views.MovieDetails]}>
-                        <Header backdrop={true} />
+                        <Header
+                            backdrop={true}
+                            selected={this.state.selected}
+                        />
 
                         {this.state.backdrop && <div className='backdrop' style={{ backgroundImage: `url(${this.state.backdrop})`}}>
                             <div className='backdrop-shader'></div>
                         </div>}
                     </Route>
                     <Route>
-                        <Header backdrop={false} />
+                        <Header
+                            backdrop={false}
+                            selected={this.state.selected}
+                        />
                     </Route>
                 </Switch>
 

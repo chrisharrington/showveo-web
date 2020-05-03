@@ -4,9 +4,6 @@ export default class BaseService {
     async get(url: string, params?: any) : Promise<any> {
         const response = await fetch(`${url}${buildQuery(params)}`, {
             method: 'GET',
-            headers: {
-                'Authorization': Config.ApiKey
-            },
             mode: 'cors'
         });
 
@@ -19,7 +16,6 @@ export default class BaseService {
     async post(url: string, params?: any, headers?: any) {
         headers = headers || {};
         headers['Content-Type'] = 'application/json';
-        headers['Authorization'] = Config.ApiKey;
         return fetch(url, {
             method: 'POST',
             mode: 'cors',

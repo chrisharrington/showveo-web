@@ -15,7 +15,6 @@ header {
 
         li {
             float: left;
-            margin-left: 15px;
 
             &:first-child {
                 margin-left: 0;
@@ -31,24 +30,53 @@ header {
             box-sizing: border-box;
             padding: 0 25px;
             cursor: pointer;
-            width: 100%;
             transition: background-color 150ms linear, transform 150ms linear;
+            font-size: 1.125em;
+            text-transform: uppercase;
         }
     }
 
     &.with-backdrop {
         background-color: $translucent-colour;
-
-        a:hover {
-            background-color: rgba(100, 100, 100, 0.35);
-        }
     }
 
     &.no-backdrop {
         background-color: #333;
+    }
 
-        a:hover {
-            background-color: #222;
+    .selector {
+        $movies-width: 57px;
+        $kid-movies-width: 100px;
+        $shows-width: 79px;
+        $kid-shows-width: 122px;
+        $padding: 25px;
+
+        position: absolute;
+        z-index: 1;
+        height: 3px;
+        background-color: $base-colour;
+        top: 52px;
+        width: 180px;
+        transition: width $transition-duration ease-out, transform $transition-duration ease-out;
+
+        &.movies {
+            width: $movies-width;
+            transform: translateX($padding);
+        }
+
+        &.kid-movies {
+            width: $kid-movies-width;
+            transform: translateX($padding + $movies-width + $padding*2);
+        }
+
+        &.shows {
+            width: $shows-width;
+            transform: translateX($padding + $movies-width + $padding*2 + $kid-movies-width + $padding*2);
+        }
+
+        &.kid-shows {
+            width: $kid-shows-width;
+            transform: translateX($padding + $movies-width + $padding*2 + $kid-movies-width + $padding*2 + $shows-width + $padding*2);
         }
     }
 }

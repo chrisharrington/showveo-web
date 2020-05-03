@@ -144,3 +144,10 @@ export class Castable {
         this.type = type;
     }
 }
+
+export enum Navigation {
+    Movies = 'movies',
+    KidMovies = 'kid-movies',
+    Shows = 'shows',
+    KidShows = 'kid-shows'
+}

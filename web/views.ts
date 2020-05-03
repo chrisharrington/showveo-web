@@ -20,7 +20,7 @@ class NavigatorClass {
 
     constructor() {
         this.back = false;
-        this.history = createBrowserHistory() as RouterHistory;
+        this.history = createBrowserHistory();
     }
 
     getKey(pathname: string, ordinal: number = 0) : string {
