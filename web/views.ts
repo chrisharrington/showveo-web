@@ -3,6 +3,8 @@ import { History as RouterHistory, createBrowserHistory } from 'history';
 export abstract class Views {
     static BasePath = '';
 
+    static SignIn = `${Views.BasePath}/sign-in`;
+
     static Movies = `${Views.BasePath}/movies`;
     static MovieDetails = `${Views.Movies}/:year/:name`;
     static MoviePlayer = `${Views.Movies}/player/:year/:name`;
@@ -11,7 +13,7 @@ export abstract class Views {
     static Show = `${Views.BasePath}/shows/:name`;
     static Season = `${Views.BasePath}/shows/:name/:season`;
     static EpisodeDetails = `${Views.BasePath}/shows/:name/:season/:episode`;
-    static EpisodePlayer = `${Views.BasePath}/shows/player/:name/:season/:episode`;
+    static EpisodePlayer = `${Views.BasePath}/shows/player/:show/:season/:number`;
 }
 
 class NavigatorClass {

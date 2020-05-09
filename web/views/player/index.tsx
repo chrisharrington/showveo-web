@@ -44,9 +44,9 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
             const params = this.props.match.params;
             let playable: Playable;
             if (params.name && params.year)
-                playable = await MovieService.getByYearAndName(params.year, StringExtensions.fromKebabCase(params.name));
-            else if (params.name && params.season && params.episode)
-                playable = await EpisodeService.getByShowSeasonAndEpisode(StringExtensions.fromKebabCase(params.name), params.season, params.episode);
+                playable = await MovieService.getByYearAndName(params.year, params.name);
+            else if (params.show && params.season && params.number)
+                playable = await EpisodeService.getByShowSeasonAndEpisode(params.show, params.season, params.number);
             else
                 throw new Error(`Unable to derive media type: ${params}`);
 

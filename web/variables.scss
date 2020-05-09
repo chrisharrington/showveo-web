@@ -7,9 +7,9 @@ $button-font: 'Assistant';
 
 $transition-duration: 150ms;
 
-$background-colour: #222;
-$base-colour: #0398fc;
-$dark-base-colour: darken($base-colour, 15%);
+$background-colour: #222222;
+$base-colour: rgb(3,152,252);
+$dark-base-colour: #003059;
 $darker-base-colour: darken($base-colour, 25%);
 $darkest-base-colour: darken($base-colour, 35%);
 $hover-colour: darken($base-colour, 12%);
@@ -37,3 +37,35 @@ $spacing-small: 15px;
         background-color: $translucent-hover-colour;
     }
 }
+
+@mixin ellipsis() {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+@mixin tile($background-colour: #333333) {
+    border-radius: 5px;
+    -webkit-user-drag: none;
+    background-color: $background-colour;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px 4px rgba(0,0,0,0.5);
+}
+
+@mixin scrollbar($track-colour: #333333, $thumb-colour: #555555) {
+    &::-webkit-scrollbar-track {
+      margin: 10px;
+      background-color: $track-colour;
+    }
+  
+    &::-webkit-scrollbar {
+      width: 6px;
+      right: 20px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      background-color: $thumb-colour;
+    }
+  }

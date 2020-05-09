@@ -1,0 +1,78 @@
+@import "variables.scss";
+
+.select {
+    position: relative;
+    
+    .indicator {
+        @include vertical-centre(40px);
+
+        position: absolute;
+        z-index: 4;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 0 $spacing-small;
+        background-color: $background-colour;
+        border-radius: 2px;
+        position: relative;
+        cursor: pointer;
+        transition: background-color $transition-duration linear;
+        border-radius: 2px;
+
+        &::after {
+            content: '▼';
+            position: absolute;
+            z-index: 2;
+            right: $spacing-small;
+            top: 0;
+            font-size: 0.625em;
+            transition: transform $transition-duration linear;
+        }
+    }
+
+    &.select-open {
+        .indicator::after {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.selector {
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100%;
+    transition: transform $transition-duration ease-out, opacity $transition-duration ease-out;
+    transform: scale(1, 0.75);
+    transform-origin: top left;
+    pointer-events: none;
+    opacity: 0;
+
+    .option {
+        @include vertical-centre(40px);
+
+        border-radius: 2px;
+        font-weight: normal;
+        width: 100%;
+        padding: 0 $spacing-small;
+        background-color: $dark-base-colour;
+        cursor: pointer;
+        transition: background-color $transition-duration/2 linear;
+        border-top: solid 1px #333;
+
+        &:first-child {
+            border-top: none;
+        }
+
+        &:hover {
+            background-color: $base-colour;
+        }
+    }
+
+    &.selector-open {
+        transform: scale(1, 1);
+        pointer-events: auto;
+        opacity: 1;
+    }
+}

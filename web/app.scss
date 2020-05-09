@@ -20,6 +20,7 @@ h1, h2, h3, h4, h5 {
     margin: 0;
     padding: 0;
     font-weight: normal;
+    text-transform: uppercase;
 }
 
 h1 {
@@ -40,6 +41,19 @@ h4 {
 
 h5 {
     font-size: $font-size;
+}
+
+button {
+    background-color: $base-colour;
+    height: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: $header-font;
+    border: none;
+    color: white;
+    border-radius: 3px;
+    font-size: 1.125em;
+    cursor: pointer;
 }
 
 .clearfix {
@@ -77,20 +91,30 @@ h5 {
     left: 0;
     background-size: cover;
     background-position: center center;
+}
 
-    .backdrop-shader {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background-color: #111;
-        opacity: 0.8;
-    }
+.backdrop-shader {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #111;
+    opacity: 0.7;
+    pointer-events: none;
 }
 
 .separator {
     width: 100%;
     height: 2px;
     background-color: #555;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.row-spacing {
+    margin-top: $spacing;
 }

@@ -31,7 +31,7 @@ export default class Header extends React.Component<{ backdrop: boolean, selecte
                 </li>
             </ul>
 
-            <div className={`selector ${this.props.selected}`}></div>
+            <div className={`header-selector ${this.props.selected}`}></div>
         </header>;
     }
 }

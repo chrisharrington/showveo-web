@@ -9,6 +9,8 @@ import { StringExtensions } from '@lib/extensions';
 import { RadioButtonGroup, RadioGroupItem } from '@web/components/form/radio-button-group';
 import { Button } from '@web/components/form/button';
 
+import './style.scss';
+
 interface MovieDetailsProps {
     match: any;
     onMovieLoaded: (movie: Movie) => void;
@@ -32,7 +34,7 @@ export default class Details extends React.Component<MovieDetailsProps, MovieDet
         const params = this.props.match.params;
         const [movie, devices] = await Promise.all([
             await MovieService.getByYearAndName(params.year, StringExtensions.fromKebabCase(params.name)),
-            await DeviceService.all()
+            await DeviceService.getAll()
         ]);
 
         const playOptions = this.state.playOptions;
@@ -49,7 +51,16 @@ export default class Details extends React.Component<MovieDetailsProps, MovieDet
 
         return <div className='view movie-details'>
             <Container>
-                <Row>
+                <div className='movie-details-tile'>
+                    <h1 className='title'>{`${movie.name} (${movie.year})`}</h1>
+
+                    <img className='poster' src={movie.poster} alt='poster' />
+
+                    <div className='info-and-actions'>
+                        <span className='synopsis'>{movie.synopsis}</span>
+                    </div>
+                </div>
+                {/* <Row>
                     <Col xs={12}>
                         <h1>{`${movie.name} (${movie.year})`}</h1>
                     </Col>
@@ -87,7 +98,7 @@ export default class Details extends React.Component<MovieDetailsProps, MovieDet
                             onClick={() => this.props.onMoviePlayed(this.state.movie, this.state.playOptions)}
                         />
                     </Col>
-                </Row>
+                </Row> */}
             </Container>
         </div>;
     }

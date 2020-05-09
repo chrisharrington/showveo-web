@@ -36,6 +36,8 @@ export interface Media {
     poster: string;
     synopsis: string;
     backdrop: string;
+    year: string;
+    genres: string[];
 }
 
 export class Movie implements Media, Playable {
@@ -46,8 +48,9 @@ export class Movie implements Media, Playable {
     synopsis: string;
     runtime: number;
     progress: number;
-    year: number;
+    year: string;
     subtitlesStatus: Status;
+    genres: string[];
 
     video() : string {
         return `${Config.ApiUrl}/movies/play/${this.year}/${this.name}`;
@@ -68,6 +71,8 @@ export class Show implements Media {
     backdrop: string;
     synopsis: string;
     year: string;
+    genres: string[];
+    runtime: number;
 }
 
 export class Season {
@@ -87,6 +92,7 @@ export class Episode implements Playable {
     number: number;
     synopsis: string;
     subtitlesStatus: Status;
+    airDate: string;
 
     video() : string {
         return `${Config.ApiUrl}/shows/play/${this.show}/${this.season}/${this.number}`;

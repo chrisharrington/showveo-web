@@ -1,0 +1,255 @@
+@import 'variables.scss';
+
+.modal {
+    .overlay {
+        position: fixed;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: $background-colour;
+        transition: opacity $transition-duration ease-in;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .content {
+        @include tile;
+
+        position: fixed;
+        z-index: 3;
+        width: 1000px;
+        top: $header-height*2;
+        left: 50%;
+        transform: translate(-50%, 75px);
+        transition: transform $transition-duration ease-in, opacity $transition-duration ease-in;
+        padding: $spacing;
+        opacity: 0;
+        pointer-events: none;
+
+        .x {
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: $spacing-small;
+            cursor: pointer;
+            color: #AAA;
+        }
+    }
+
+    &.modal-visible {
+        .overlay {
+            opacity: 0.95;
+            pointer-events: auto;
+        }
+
+        .content {
+            transform: translate(-50%, 0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+}
+
+.movie-modal, .show-modal {
+    .content {
+        background-size: cover;
+    }
+
+    .title {
+        line-height: 1;
+        display: block;
+    }
+
+    .synopsis {
+        margin-top: $spacing;
+    }
+
+    .info {
+        width: 100%;
+        margin-top: $spacing;
+    }
+}
+
+.show-modal .content {
+    @include scrollbar;
+    width: 1200px;
+    height: 1000px;
+    overflow-y: scroll;
+
+    .show-header {
+        margin-top: $spacing;
+        width: 100%;
+
+        .metadata {
+            float: left;
+            margin-top: 9px;
+        }
+
+        .actions {
+            float: right;
+
+            .action {
+                float: right;
+                margin-left: $spacing;
+                width: 250px;
+            }
+        }
+    }
+
+    .seasons {
+        position: relative;
+
+        ul {
+            padding: 0;
+            width: 100%;
+            margin: $spacing 0 0 0;
+            list-style-type: none;
+
+            li {
+                float: left;
+                margin: 0 0 0 $spacing*2;
+                text-transform: uppercase;
+                font-family: $header-font;
+                font-size: 1.125em;
+                cursor: pointer;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
+
+        .season-selector {
+            position: absolute;
+            width: 71px;
+            top: 32px;
+            left: 0;
+            height: 3px;
+            background-color: $base-colour;
+            transition: transform $transition-duration ease-out;
+
+            @for $i from 0 through 30 {
+                &.season-#{$i} {
+                    transform: translateX(123px*$i);
+                }
+            }
+        }
+    }
+
+    .episodes {
+        width: 100%;
+        position: relative;
+        padding-bottom: $spacing;
+
+        .episode {
+            float: left;
+            padding: $spacing;
+            background-color: #222222;
+            transition: background-color $transition-duration ease-out;
+            border-radius: 5px;
+            margin-top: $spacing;
+            overflow: hidden;
+            position: relative;
+
+            &:last-child {
+                margin-bottom: $spacing;
+            }
+
+            &:nth-child(2n) {
+                margin-left: $spacing;
+            }
+
+            .episode-header {
+                width: 100%;
+
+                .episode-number {
+                    float: left;
+                    font-size: 1.5em;
+                    font-family: $header-font;
+                    letter-spacing: 2px;
+                }
+
+                .episode-metadata {
+                    float: right;
+                    font-size: 0.875em;
+                    color: #AAA;
+                }
+            }
+
+            .episode-title, .episode-synopsis {
+                width: 100%;
+                margin-top: $spacing;
+            }
+
+            .episode-title {
+                @include ellipsis;
+            }
+
+            .episode-synopsis {
+                height: 200px;
+                width: 100%;
+            }
+
+            .episode-actions {
+                margin-top: $spacing;
+                width: 100%;
+
+                button {
+                    width: 100%;
+                    display: inline-block;
+                }
+
+                &.split button {
+                    width: calc(50% - #{$spacing}/2);
+
+                    &:first-child {
+                        margin-right: $spacing;
+                    }
+                }
+            }
+
+            &:hover .episode-actions {
+                transform: translateY(0);
+            }
+        }
+    }
+}
+
+.movie-modal .content {
+    width: 600px;
+
+    .synopsis {
+        display: block;
+        margin-top: $spacing;
+    }
+
+    .options {
+        margin-top: $spacing;
+    }
+
+    .play-button {
+        height: 80px;
+        background-color: $base-colour;
+        border-radius: 2px;
+        border: none;
+        color: white;
+        font-size: 1.4em;
+        text-align: center;
+        width: 100%;
+        transition: background-color $transition-duration/2 linear;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-family: $header-font;
+
+        i {
+            margin-top: 2px;
+        }
+
+        &:active {
+            background-color: darken($base-colour, 10%);
+        }
+    }
+}
+

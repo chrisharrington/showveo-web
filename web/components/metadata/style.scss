@@ -1,0 +1,19 @@
+@import 'variables.scss';
+
+.metadata {
+    font-size: 0.875em;
+    color: #AAA;
+    font-weight: bold;
+
+    span {
+        margin-left: $spacing-small;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &.delimiter {
+            color: $base-colour;
+        }
+    }
+}

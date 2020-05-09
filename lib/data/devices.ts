@@ -4,7 +4,7 @@ import Config from '@lib/config';
 import BaseService from './base';
 
 class DeviceService extends BaseService {
-    async all() : Promise<Device[]> {
+    async getAll() : Promise<Device[]> {
         const devices = await this.get(`${Config.ApiUrl}/devices`);
         return [Device.thisDevice()].concat(devices.map((device: Device) => this.build(device)));
     }

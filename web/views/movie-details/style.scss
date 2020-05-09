@@ -1,0 +1,26 @@
+@import 'variables.scss';
+
+.movie-details-tile {
+    @include tile($translucent-colour);
+
+    padding: $spacing;
+
+    .title {
+        float: left;
+        width: 100%;
+        margin-bottom: $spacing*3/2;
+        line-height: 1;
+    }
+
+    .poster {
+        float: left;
+        width: 250px;
+        margin-right: $spacing;
+        border-radius: 5px;
+    }
+
+    .info-and-actions {
+        float: left;
+        width: calc(100% - 250px - #{$spacing});
+    }
+}
