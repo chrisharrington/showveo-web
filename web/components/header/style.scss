@@ -64,13 +64,13 @@ header {
             transform: translateX($padding);
         }
 
-        &.kid-movies {
-            width: $kid-movies-width;
+        &.shows {
+            width: $shows-width;
             transform: translateX($padding + $movies-width + $padding*2);
         }
 
-        &.shows {
-            width: $shows-width;
+        &.kid-movies {
+            width: $kid-movies-width;
             transform: translateX($padding + $movies-width + $padding*2 + $kid-movies-width + $padding*2);
         }
 

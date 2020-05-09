@@ -34,6 +34,8 @@ interface IShowModalState {
 }
 
 export default class ShowModal extends React.Component<IShowModalProps, IShowModalState> {
+    episodesInSeasons: { [season: number]: Episode[] }
+    
     state = {
         visible: false,
         loading: false,
@@ -43,6 +45,12 @@ export default class ShowModal extends React.Component<IShowModalProps, IShowMod
         episodes: [],
         subtitles: false,
         device: Device.thisDevice()
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.episodesInSeasons = {};
     }
 
     async componentDidUpdate(previousProps) {
@@ -55,6 +63,12 @@ export default class ShowModal extends React.Component<IShowModalProps, IShowMod
                 episodes = await EpisodeService.getByShowAndSeason(show.name, seasons[0].number);
 
             this.setState({ loading: false, seasons, episodes, seasonIndex: 0 });
+            this.episodesInSeasons[seasons[0].number] = episodes;
+
+            const allEpisodes = await Promise.all(seasons.slice(1).map((season: Season) => EpisodeService.getByShowAndSeason(show.name, season.number)));
+            allEpisodes.forEach((episodes: Episode[], index: number) => {
+                this.episodesInSeasons[seasons[index+1].number] = episodes;
+            });
         } else if (previousProps.show && !this.props.show)
             this.setState({
                 visible: false
@@ -106,7 +120,12 @@ export default class ShowModal extends React.Component<IShowModalProps, IShowMod
 
                 <div className='seasons'>
                     <ul>
-                        {this.state.seasons.map((season: Season, seasonIndex: number) => <li key={seasonIndex} onClick={() => this.setState({ seasonIndex })}>{`Season ${season.number}`}</li>)}
+                        {this.state.seasons.map((season: Season, seasonIndex: number) => <li
+                            key={seasonIndex}
+                            onClick={() => this.onSeasonChange(season, seasonIndex)}
+                        >
+                            {`Season ${season.number}`}
+                        </li>)}
                     </ul>
 
                     <div className={`season-selector ${this.state.seasonIndex ? ('season-' + this.state.seasonIndex) : ''}`}></div>
@@ -134,5 +153,12 @@ export default class ShowModal extends React.Component<IShowModalProps, IShowMod
                 </div>
             </div>}
         </Modal>
+    }
+
+    private onSeasonChange(season: Season, seasonIndex: number) {
+        this.setState({
+            seasonIndex,
+            episodes: this.episodesInSeasons[season.number]
+        });
     }
 }
