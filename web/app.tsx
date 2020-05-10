@@ -1,12 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Location } from 'history';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import { StringExtensions } from '@lib/extensions';
-import { Movie, Show, Media, Season, PlayOptions, Castable, PlayableType, Navigation, Device, Episode } from '@lib/models';
+import { Movie, Show, PlayOptions, Castable, PlayableType, Navigation, Device, Episode, User } from '@lib/models';
 import MovieService from '@lib/data/movies';
 import ShowService from '@lib/data/shows';
 import DeviceService from '@lib/data/devices';
+import AuthService from '@lib/data/auth';
 
 import Header from '@web/components/header';
 import Cast from '@web/components/cast';
@@ -16,13 +18,14 @@ import ShowModal from '@web/components/modal/show';
 import { Navigator, Views } from '@web/views';
 import PlayerView from '@web/views/player';
 import MediaView from '@web/views/media';
-import ShowView from '@web/views/show';
-import MovieDetailsView from '@web/views/movie-details';
 import SignInView from '@web/views/sign-in';
 
 import './app.scss';
 
 interface AppState {
+    authorized: boolean;
+    authorizing: boolean;
+    user: User | null;
     movies: Movie[];
     shows: Show[];
     devices: Device[];
@@ -37,6 +40,10 @@ class App extends React.Component<{}, AppState> {
     cast: Cast;
 
     state = {
+        authorized: false,
+        authorizing: true,
+        user: null,
+
         movies: [],
         shows: [],
         devices: [],
@@ -49,18 +56,25 @@ class App extends React.Component<{}, AppState> {
     }
 
     async componentDidMount() {
-        Navigator.history.listen((location) => {
-            this.setState({ selected: location.pathname.substring(1).split('/')[0] as Navigation });
+        Navigator.history.listen(async (location) => {
+            this.setState({
+                selected: location.pathname.substring(1).split('/')[0] as Navigation,
+                authorized: await AuthService.isAuthorized(this.getTokenFromCookie()),
+                authorizing: false
+            });
         });
 
         const moviesTask = MovieService.getAll(),
             showsTask = ShowService.getAll(),
-            devicesTask = DeviceService.getAll();
+            devicesTask = DeviceService.getAll(),
+            isAuthorizedTask = AuthService.isAuthorized(this.getTokenFromCookie());
 
         this.setState({
             movies: await moviesTask,
             shows: await showsTask,
             devices: await devicesTask,
+            authorized: await isAuthorizedTask,
+            authorizing: false,
             selected: Navigator.history.location.pathname.substring(1).split('/')[0] as Navigation
         });
     }
@@ -68,53 +82,17 @@ class App extends React.Component<{}, AppState> {
     render() {
         return <div>
             <Router history={Navigator.history}>
-                <Header
-                    backdrop={true}
-                    selected={this.state.selected}
-                />
-
-                <Route render={({ location }) => (
-                    <Switch location={location}>
-                        <Route exact path={[Views.MoviePlayer, Views.EpisodePlayer]} component={PlayerView} />
-
-                        <Route exact path={Views.SignIn}>
-                            <SignInView
-
-                            />
-                        </Route>
-
-                        <Route exact path={Views.Movies}>
-                            <MediaView
-                                media={this.state.movies}
-                                onMediaClicked={(movie: Movie) => this.setState({ movie })}
-                            />
-                        </Route>
-
-                        <Route path={Views.MovieDetails} render={(props) => <MovieDetailsView
-                            {...props}
-                            onMovieLoaded={(movie: Movie) => this.setState({ backdrop: movie.backdrop })}
-                            onMoviePlayed={(movie: Movie, options: PlayOptions) => this.onPlayMovie(movie, options)}
-                        />} />
-
-                        <Route exact path={Views.Shows}>
-                            <MediaView
-                                media={this.state.shows}
-                                // onMediaClicked={(show: Show) => this.onNavigateToMedia(Views.Show, show)}
-                                onMediaClicked={(show: Show) => this.setState({ show })}
-                            />
-                        </Route>
-
-                        <Route path={Views.Show} render={(props) => <ShowView
-                            {...props}
-                            onShowLoaded={(show: Show) => this.setState({ backdrop: show.backdrop })}
-                            onSeasonClicked={(show: Show, season: Season) => this.onNavigateToSeason(show, season)}
-                        />} />
-
-                        <Route path={Views.BasePath}>
-                            <Redirect to={Views.Shows} />
-                        </Route>
-                    </Switch>
-                )} />
+                <Route render={({ location }) => {
+                    console.log(this.state.authorizing, this.state.authorized);
+                    let element: JSX.Element;
+                    if (this.state.authorizing)
+                        element = <div className='page-loader' />;
+                    else if (this.state.authorized || location.pathname.endsWith(Views.SignIn))
+                        element = this.renderAuthorized(location);
+                    else
+                        element = <Redirect to={Views.SignIn} />
+                    return element;
+                }} />
             </Router>
 
             <Cast
@@ -137,7 +115,46 @@ class App extends React.Component<{}, AppState> {
         </div>;
     }
 
-    async onPlayMovie(movie: Movie, options: PlayOptions) {
+    renderAuthorized(location: Location) : JSX.Element {
+        return <>
+            <Route exact path={new RegExp(/^(?!.*(\/sign-in)).*$/) as any}>
+                <Header
+                    backdrop={true}
+                    selected={this.state.selected}
+                />
+            </Route>
+
+            <Switch location={location}>
+                <Route exact path={[Views.MoviePlayer, Views.EpisodePlayer]} component={PlayerView} />
+
+                <Route exact path={Views.SignIn}>
+                    <SignInView
+                        onSignIn={(user: User) => this.onSignIn(user)}
+                    />
+                </Route>
+
+                <Route exact path={Views.Movies}>
+                    <MediaView
+                        media={this.state.movies}
+                        onMediaClicked={(movie: Movie) => this.setState({ movie })}
+                    />
+                </Route>
+
+                <Route exact path={Views.Shows}>
+                    <MediaView
+                        media={this.state.shows}
+                        onMediaClicked={(show: Show) => this.setState({ show })}
+                    />
+                </Route>
+
+                <Route path={Views.BasePath}>
+                    <Redirect to={Views.Shows} />
+                </Route>
+            </Switch>
+        </>;
+    }
+
+    private async onPlayMovie(movie: Movie, options: PlayOptions) {
         this.setState({ movie: null });
 
         if (options.device.isThisDevice) {
@@ -150,7 +167,7 @@ class App extends React.Component<{}, AppState> {
             await this.cast.cast(new Castable(movie, options, PlayableType.Movie));
     }
 
-    async onPlayEpisode(episode: Episode, options: PlayOptions) {
+    private async onPlayEpisode(episode: Episode, options: PlayOptions) {
         this.setState({ show: null });
 
         if (options.device.isThisDevice) {
@@ -163,16 +180,22 @@ class App extends React.Component<{}, AppState> {
             await this.cast.cast(new Castable(episode, options, PlayableType.Episode));
     }
 
-    onNavigateToMedia(view: string, media: Media, query?: any) {
-        media.name = StringExtensions.toKebabCase(media.name);
-        Navigator.navigate(view, media, query);
+    private onSignIn(user: User) {
+        this.setState({ user, authorized: true, authorizing: false });
+        Navigator.navigate(Views.Movies);
     }
 
-    onNavigateToSeason(show: Show, season: Season) {
-        Navigator.navigate(Views.Season, {
-            name: StringExtensions.toKebabCase(show.name),
-            season: season.number 
+    private getTokenFromCookie() : string {
+        const cookies = document.cookie.split('; ');
+
+        let auth = '';
+        cookies.forEach((cookie: string) => {
+            const parts = cookie.split('=');
+            if (parts[0] === 'token')
+                auth = parts[1];
         });
+        
+        return auth;
     }
 }
 

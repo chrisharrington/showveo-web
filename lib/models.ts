@@ -157,3 +157,7 @@ export enum Navigation {
     Shows = 'shows',
     KidShows = 'kid-shows'
 }
+
+export class User {
+    emailAddress: string;
+}

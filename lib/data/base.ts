@@ -20,7 +20,8 @@ export default class BaseService {
             method: 'POST',
             mode: 'cors',
             headers: new Headers(headers),
-            body: JSON.stringify(params)
+            body: JSON.stringify(params),
+            credentials: 'include'
         });
     }
 }

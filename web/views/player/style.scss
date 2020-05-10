@@ -1,4 +1,5 @@
 @import 'variables.scss';
+@import 'animations.scss';
 
 .player {
     position: absolute;
@@ -129,14 +130,5 @@
         .play-pause {
             display: none;
         }
-    }
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
     }
 }

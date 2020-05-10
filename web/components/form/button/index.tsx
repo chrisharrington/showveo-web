@@ -8,7 +8,7 @@ interface ButtonProps {
     className?: string;
 }
 
-export class Button extends React.Component<ButtonProps> {
+export default class Button extends React.Component<ButtonProps> {
     render() {
         const p = this.props;
         return <button type='button' className={`button ${p.className || ''}`} onClick={p.onClick}>

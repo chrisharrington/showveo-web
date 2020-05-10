@@ -1,0 +1,24 @@
+@import 'variables.scss';
+
+.sign-in {
+    .sign-in-tile {
+        @include tile;
+
+        padding: $spacing;
+        width: 500px;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+
+        .text {
+            margin-top: $spacing-small;
+            width: 100%;
+        }
+
+        .button {
+            margin-top: $spacing;
+            width: 100%;
+        }
+    }
+}

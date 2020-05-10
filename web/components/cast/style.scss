@@ -1,4 +1,5 @@
 @import 'variables.scss';
+@import 'animations.scss';
 
 .cast {
     $height: 60px;
@@ -97,9 +98,4 @@
             margin-left: -8px;
         }
     }
-}
-
-@keyframes spin {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(360deg);}
 }

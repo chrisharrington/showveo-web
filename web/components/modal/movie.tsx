@@ -7,6 +7,7 @@ import { StringExtensions } from '@lib/extensions';
 import Modal from '@web/components/modal';
 import Metadata from '@web/components/metadata';
 import { Select, Option } from '@web/components/form/select';
+import Button from '@web/components/form/button';
 
 interface IMovieModalProps {
     movie: Movie | null;
@@ -84,12 +85,11 @@ export default class MovieModal extends React.Component<IMovieModalProps, IMovie
                     </Row>
                     <Row className='row-spacing'>
                         <Col xs={12}>
-                            <button
+                            <Button
+                                label='Play'
                                 className='play-button'
                                 onClick={() => this.props.onPlay(this.props.movie, new PlayOptions(this.state.device, this.state.resume, this.state.subtitles))}
-                            >
-                                Play
-                            </button>
+                            />
                         </Col>
                     </Row>
                 </Container>

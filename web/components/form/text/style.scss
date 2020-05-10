@@ -1,0 +1,26 @@
+@import 'variables.scss';
+
+.text {
+    label {
+        width: 100%;
+        display: inline-block;
+        font-size: 0.75em;
+        color: #CCC;
+        margin: 0 0 8px 0;
+        line-height: 1;
+    }
+
+    input {
+        display: inline-block;
+        width: 100%;
+        margin: 0;
+        height: $form-height;
+        border-radius: 2px;
+        border: none;
+        background-color: $background-colour;
+        padding: 0 $spacing-small;
+        color: white;
+        outline: none !important;
+        font-size: 0.875em;
+    }
+}

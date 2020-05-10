@@ -7,6 +7,7 @@ import EpisodeService from '@lib/data/episodes';
 import { StringExtensions } from '@lib/extensions';
 
 import { Select, Option } from '@web/components/form/select';
+import Button from '@web/components/form/button';
 import Modal from '@web/components/modal';
 import Metadata from '@web/components/metadata';
 
@@ -145,8 +146,8 @@ export default class ShowModal extends React.Component<IShowModalProps, IShowMod
                             <div className='episode-synopsis'>{episode.synopsis}</div>
 
                             <div className={`episode-actions ${episode.progress > 0 ? 'split' : ''}`}>
-                                {!!episode.progress && <button onClick={() => this.props.onPlay(episode, new PlayOptions(this.state.device, true, this.state.subtitles))}>Resume</button>}
-                                <button onClick={() => this.props.onPlay(episode, new PlayOptions(this.state.device, false, this.state.subtitles))}>Play</button>
+                                {!!episode.progress && <Button onClick={() => this.props.onPlay(episode, new PlayOptions(this.state.device, true, this.state.subtitles))} label='Resume' />}
+                                <Button onClick={() => this.props.onPlay(episode, new PlayOptions(this.state.device, false, this.state.subtitles))} label='Play' />
                             </div>
                         </div>
                     ))}

@@ -230,26 +230,7 @@
     }
 
     .play-button {
-        height: 80px;
-        background-color: $base-colour;
-        border-radius: 2px;
-        border: none;
-        color: white;
-        font-size: 1.4em;
-        text-align: center;
         width: 100%;
-        transition: background-color $transition-duration/2 linear;
-        cursor: pointer;
-        text-transform: uppercase;
-        font-family: $header-font;
-
-        i {
-            margin-top: 2px;
-        }
-
-        &:active {
-            background-color: darken($base-colour, 10%);
-        }
     }
 }
 

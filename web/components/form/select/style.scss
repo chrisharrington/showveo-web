@@ -17,7 +17,6 @@
         position: relative;
         cursor: pointer;
         transition: background-color $transition-duration linear;
-        border-radius: 2px;
 
         &::after {
             content: '▼';
