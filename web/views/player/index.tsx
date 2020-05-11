@@ -92,7 +92,6 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
             <video
                 ref={c => this.video = c as HTMLVideoElement}
                 autoPlay
-                crossOrigin='anonymous'
                 onClick={e => this.onTogglePlayback(e)}
                 onSeeking={() => this.onLoading(true)}
                 onSeeked={() => this.onLoading(false)}
