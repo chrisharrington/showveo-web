@@ -2,8 +2,6 @@ import * as React from 'react';
 
 import { Media } from '@lib/models';
 
-import { Navigator, Views } from '@web/views';
-
 import List from './list';
 
 import './style.scss';

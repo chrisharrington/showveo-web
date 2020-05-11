@@ -9,6 +9,7 @@ import MovieService from '@lib/data/movies';
 import ShowService from '@lib/data/shows';
 import DeviceService from '@lib/data/devices';
 import AuthService from '@lib/data/auth';
+import { HttpError, ErrorCode } from '@lib/errors';
 
 import Header from '@web/components/header';
 import Cast from '@web/components/cast';
@@ -22,16 +23,19 @@ import SignInView from '@web/views/sign-in';
 
 import './app.scss';
 
+
 interface AppState {
     authorized: boolean;
     authorizing: boolean;
     user: User | null;
+
     movies: Movie[];
     shows: Show[];
     devices: Device[];
-    backdrop: string;
+
     cast: Castable | null;
     selected: Navigation;
+
     movie: Movie | null;
     show: Show | null;
 }
@@ -47,7 +51,7 @@ class App extends React.Component<{}, AppState> {
         movies: [],
         shows: [],
         devices: [],
-        backdrop: '',
+
         cast: null,
         selected: Navigation.Movies,
 
@@ -56,34 +60,40 @@ class App extends React.Component<{}, AppState> {
     }
 
     async componentDidMount() {
-        Navigator.history.listen(async (location) => {
-            this.setState({
-                selected: location.pathname.substring(1).split('/')[0] as Navigation,
-                authorized: await AuthService.isAuthorized(this.getTokenFromCookie()),
-                authorizing: false
+        try {
+            Navigator.history.listen(async (location) => {
+                this.setState({
+                    selected: location.pathname.substring(1).split('/')[0] as Navigation,
+                    authorized: await AuthService.isAuthorized(this.getTokenFromCookie()),
+                    authorizing: false
+                });
             });
-        });
 
-        const moviesTask = MovieService.getAll(),
-            showsTask = ShowService.getAll(),
-            devicesTask = DeviceService.getAll(),
-            isAuthorizedTask = AuthService.isAuthorized(this.getTokenFromCookie());
+            const authorized = await AuthService.isAuthorized(this.getTokenFromCookie());
+            if (!authorized) {
+                Navigator.navigate(Views.SignIn);
+                return;
+            }
 
-        this.setState({
-            movies: await moviesTask,
-            shows: await showsTask,
-            devices: await devicesTask,
-            authorized: await isAuthorizedTask,
-            authorizing: false,
-            selected: Navigator.history.location.pathname.substring(1).split('/')[0] as Navigation
-        });
+            this.setState({
+                authorized,
+                authorizing: false,
+                selected: Navigator.history.location.pathname.substring(1).split('/')[0] as Navigation
+            });
+
+            await this.loadMedia();
+        } catch (e) {
+            if (e instanceof HttpError && (e as HttpError).code === ErrorCode.Unauthorized)
+                Navigator.navigate(Views.SignIn);
+
+            console.error(e);
+        }
     }
 
     render() {
         return <div>
             <Router history={Navigator.history}>
                 <Route render={({ location }) => {
-                    console.log(this.state.authorizing, this.state.authorized);
                     let element: JSX.Element;
                     if (this.state.authorizing)
                         element = <div className='page-loader' />;
@@ -181,7 +191,7 @@ class App extends React.Component<{}, AppState> {
     }
 
     private onSignIn(user: User) {
-        this.setState({ user, authorized: true, authorizing: false });
+        this.setState({ user, authorized: true, authorizing: false }, () => this.loadMedia());
         Navigator.navigate(Views.Movies);
     }
 
@@ -196,6 +206,18 @@ class App extends React.Component<{}, AppState> {
         });
         
         return auth;
+    }
+
+    private async loadMedia() {
+        const moviesTask = MovieService.getAll(),
+            showsTask = ShowService.getAll(),
+            devicesTask = DeviceService.getAll();
+
+        this.setState({
+            movies: await moviesTask,
+            shows: await showsTask,
+            devices: await devicesTask,
+        });
     }
 }
 

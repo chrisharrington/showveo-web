@@ -1,14 +1,17 @@
-import Config from '@lib/config';
+import { ErrorCode, HttpError } from '@lib/errors';
 
 export default class BaseService {
     async get(url: string, params?: any) : Promise<any> {
         const response = await fetch(`${url}${buildQuery(params)}`, {
             method: 'GET',
-            mode: 'cors'
+            mode: 'cors',
+            credentials: 'include'
         });
 
-        if (response.status === 500)
-            throw new Error(response.body ? response.body.toString() : '');
+        if (response.status === ErrorCode.InternalError)
+            throw new HttpError(ErrorCode.InternalError, response.body ? response.body.toString() : '');
+        if (response.status === ErrorCode.Unauthorized)
+            throw new HttpError(ErrorCode.Unauthorized, 'Unauthorized.');
 
         return await response.json();
     }
