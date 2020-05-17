@@ -1,7 +1,7 @@
 import BaseService from './base';
 
 import Config from '@lib/config';
-import { Episode } from '@lib/models';
+import { Episode, Device } from '@lib/models';
 
 class EpisodeService extends BaseService {
     async getByShowAndSeason(show: string, season: number) : Promise<Episode[]> {
@@ -18,6 +18,10 @@ class EpisodeService extends BaseService {
             id,
             secondsFromStart
         });
+    }
+
+    async stop(episode: Episode, device: Device) : Promise<void> {
+        this.post(`${Config.ApiUrl}/shows/${episode.show}/${episode.season}/${episode.number}/${device.host}`);
     }
 
     private build(data: any) : Episode {

@@ -29,6 +29,7 @@ export interface Playable {
     video() : string;
     subtitle() : string;
     saveProgress(time: number) : Promise<void>;
+    stop(device: Device) : Promise<void>;
 }
 
 export interface Media {
@@ -62,6 +63,10 @@ export class Movie implements Media, Playable {
 
     async saveProgress(time: number) : Promise<void> {
         await MovieService.saveProgress(this._id, time);
+    }
+
+    async stop(device: Device) : Promise<void> {
+        await MovieService.stop(this, device);
     }
 }
 
@@ -105,6 +110,10 @@ export class Episode implements Playable {
     async saveProgress(time: number) : Promise<void> {
         await EpisodeService.saveProgress(this._id, time);
     }
+
+    async stop(device: Device) : Promise<void> {
+        await EpisodeService.stop(this, device);
+    }
 }
 
 export class Device {
@@ -121,7 +130,7 @@ export class Device {
         const device = new Device();
         device.id = '';
         device.name = 'This Device';
-        device.host = '';
+        device.host = 'local';
         device.isThisDevice = true;
         return device;
     }

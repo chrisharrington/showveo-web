@@ -1,7 +1,7 @@
 import BaseService from './base';
 
 import Config from '@lib/config';
-import { Movie } from '@lib/models';
+import { Movie, Device } from '@lib/models';
 
 class MovieService extends BaseService {
     async getAll() : Promise<Movie[]> {
@@ -18,6 +18,10 @@ class MovieService extends BaseService {
             id,
             secondsFromStart
         });
+    }
+
+    async stop(movie: Movie, device: Device) : Promise<void> {
+        this.post(`${Config.ApiUrl}/movies/stop/${movie.name}/${movie.year}/${device.host}`);
     }
 
     private build(data: any) : Movie {

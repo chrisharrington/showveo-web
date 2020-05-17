@@ -6,7 +6,7 @@ import './style.scss';
 import { StringExtensions } from '@lib/extensions';
 import MovieService from '@lib/data/movies';
 import EpisodeService from '@lib/data/episodes';
-import { Playable, Status } from '@lib/models';
+import { Playable, Status, Device } from '@lib/models';
 
 interface PlayerProps {
     match: any;
@@ -26,7 +26,7 @@ interface PlayerState {
 export default class PlayerView extends React.Component<PlayerProps, PlayerState> {
     video: HTMLVideoElement;
     seekBar: HTMLDivElement;
-    saveProgressHandler: any;
+    onBeforeUnloadHandler: any;
 
     state = {
         playable: null,
@@ -67,8 +67,8 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
                 this.onToggleSubtiles(query.subtitles === '1');
             });
 
-            this.saveProgressHandler = this.saveProgress.bind(this);
-            window.addEventListener('beforeunload', this.saveProgressHandler);
+            this.onBeforeUnloadHandler = this.onBeforeUnload.bind(this);
+            window.addEventListener('beforeunload', this.onBeforeUnloadHandler);
         } catch (e) {
             console.error(e);
             this.setState({
@@ -79,8 +79,8 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
     }
 
     async componentWillUnmount() {
-        window.removeEventListener('beforeunload', this.saveProgressHandler);
-        await this.saveProgress();
+        window.removeEventListener('beforeunload', this.onBeforeUnloadHandler);
+        await this.onBeforeUnload();
     }
 
     render() {
@@ -177,7 +177,7 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
         this.setState({ progress: position/width*100 })
         this.video.currentTime = seek;
 
-        await this.saveProgress();
+        await this.onBeforeUnload();
     }
 
     private onLoading(loading: boolean) {
@@ -187,11 +187,14 @@ export default class PlayerView extends React.Component<PlayerProps, PlayerState
         this.setState({ loading });
     }
 
-    private async saveProgress() {
+    private async onBeforeUnload() {
         const playable: Playable = this.state.playable as any as Playable;
         if (!playable)
             return;
 
-        await playable.saveProgress(this.video.currentTime);
+        await Promise.all([
+            playable.saveProgress(this.video.currentTime),
+            playable.stop(Device.thisDevice())
+        ]);
     }
 }

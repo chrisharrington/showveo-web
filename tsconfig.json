@@ -1,25 +1,34 @@
 {
     "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "baseUrl": ".",
-      "jsx": "react",
-      "paths": {
-          "@web/*": ["./web/*"],
-          "@native/*": ["./native/*"],
-          "@lib/*": ["./lib/*"]
-      },
-      "sourceMap": true
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "jsx": "react",
+        "paths": {
+            "@web/*": ["./web/*"],
+            "@native/*": ["./native/*"],
+            "@lib/*": ["./lib/*"]
+        },
+        "sourceMap": true,
+        "types": [
+            "react"
+        ],
+        "lib": [
+            "es2017",
+            "dom"
+        ],
+        "skipLibCheck": true,
+        "outDir": "dist"
     },
     "include": [
-      "**/*.ts",
-      "**/*.tsx",
-      "../../node_modules/@types/**/*.d.ts"
+        "**/*.ts",
+        "**/*.tsx",
+        "../../node_modules/@types/**/*.d.ts"
     ],
     "exclude": [
-      "**/__tests__/**/*",
-      "node_modules"
+        "**/__tests__/**/*",
+        "node_modules"
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true,
