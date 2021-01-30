@@ -168,8 +168,10 @@ class App extends React.Component<{}, AppState> {
         this.setState({ movie: null });
 
         if (options.device.isThisDevice) {
-            movie.name = StringExtensions.toKebabCase(movie.name);
-            Navigator.navigate(Views.MoviePlayer, movie, {
+            Navigator.navigate(Views.MoviePlayer, {
+                name: StringExtensions.toKebabCase(movie.name),
+                year: movie.year
+            }, {
                 resume: options.isResume ? '1' : '0',
                 subtitles: options.isSubtitled ? '1' : '0'
             });
@@ -181,8 +183,11 @@ class App extends React.Component<{}, AppState> {
         this.setState({ show: null });
 
         if (options.device.isThisDevice) {
-            episode.show = StringExtensions.toKebabCase(episode.show);
-            Navigator.navigate(Views.EpisodePlayer, episode, {
+            Navigator.navigate(Views.EpisodePlayer, {
+                show: StringExtensions.toKebabCase(episode.show),
+                season: episode.season,
+                number: episode.number
+            }, {
                 resume: options.isResume ? '1' : '0',
                 subtitles: options.isSubtitled ? '1' : '0'
             });

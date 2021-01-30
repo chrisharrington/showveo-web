@@ -1,6 +1,6 @@
 export class StringExtensions {
     static toKebabCase(value: string) {
-        return value.toLowerCase().split(' ').join('-');
+        return value.replace(/ - /g, ' ').toLowerCase().split(' ').map(s => s.trim()).join('-');
     }
     
     static fromKebabCase(value: string) {

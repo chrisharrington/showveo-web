@@ -46,7 +46,7 @@ export default class List extends React.Component<IMediaListProps, IMediaListSta
                 media={media}
                 top={baseTop + (count === 0 ? 0 : (Math.floor(index/count) * (height + PADDING)))}
                 left={baseLeft + (count === 0 ? 0 : index%count * (width + PADDING))}
-                key={media.name}
+                key={`${media.name} ${media.year}`}
                 width={this.state.tileWidth}
                 onClick={() => this.props.onClickMedia(media)}
             />)}
