@@ -7,7 +7,7 @@ import './style.scss';
 
 export default class Header extends React.Component<{ backdrop: boolean, selected: Navigation }> {
     render() {
-        return <header className={this.props.backdrop ? 'with-backdrop' : 'no-backdrop'}>
+        return <header>
             <ul>
                 <li>
                     <h5>

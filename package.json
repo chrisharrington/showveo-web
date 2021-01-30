@@ -9,6 +9,7 @@
   "scripts": {
     "web": "./node_modules/.bin/webpack --config ./web/webpack.config.js",
     "web:dev": "./node_modules/.bin/webpack-dev-server --hot --host 0.0.0.0 --public https://www.showveo.com --config ./web/webpack.config.js",
+    "web:logs": "docker-compose logs -f --tail 100 web",
     "android:run": "npx react-native run-android",
     "android:bundle": "./node_modules/.bin/metro serve",
     "android:watch": "./node_modules/.bin/tsc -w"
