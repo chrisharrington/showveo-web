@@ -1,6 +1,7 @@
 import MovieService from '@lib/data/movies';
 import EpisodeService from '@lib/data/episodes';
 import Config from '@lib/config';
+import { StringExtensions } from '@lib/extensions';
 
 export enum Status {
     Missing = 'missing',
@@ -26,7 +27,7 @@ export interface Playable {
     progress: number;
     subtitlesStatus: Status;
 
-    video() : string;
+    video(seek?: number) : string;
     subtitle() : string;
     saveProgress(time: number) : Promise<void>;
     stop(device: Device) : Promise<void>;
@@ -53,12 +54,12 @@ export class Movie implements Media, Playable {
     subtitlesStatus: Status;
     genres: string[];
 
-    video() : string {
-        return `${Config.ApiUrl}/movies/play/${this.year}/${this.name}`;
+    video(seek?: number) : string {
+        return `${Config.ApiUrl}/movies/play/${this.year}/${StringExtensions.toKebabCase(this.name)}?seek=${seek || 0}`;
     }
 
     subtitle() : string {
-        return `${Config.ApiUrl}/movies/subtitle/${this.year}/${this.name}`;
+        return `${Config.ApiUrl}/movies/subtitle/${this.year}/${StringExtensions.toKebabCase(this.name)}`;
     }
 
     async saveProgress(time: number) : Promise<void> {
@@ -99,8 +100,8 @@ export class Episode implements Playable {
     subtitlesStatus: Status;
     airDate: string;
 
-    video() : string {
-        return `${Config.ApiUrl}/shows/play/${this.show}/${this.season}/${this.number}`;
+    video(seek?: number) : string {
+        return `${Config.ApiUrl}/shows/play/${this.show}/${this.season}/${this.number}?seek=${seek || 0}`;
     }
 
     subtitle() : string {
