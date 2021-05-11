@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { Castable, Device } from '@lib/models';
-import DeviceService from '@lib/data/devices';
+import { Castable, Device } from 'showveo-lib';
+import { DeviceService } from 'showveo-lib';
+import { StringExtensions } from 'showveo-lib';
 
 import './style.scss';
-import { StringExtensions } from '@web/../lib/extensions';
 
 enum Status {
     Loading = 'loading',

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as dayjs from 'dayjs';
 
-import { Show, Season, Episode, Device, PlayOptions } from '@lib/models';
-import SeasonService from '@lib/data/seasons';
-import EpisodeService from '@lib/data/episodes';
-import { StringExtensions } from '@lib/extensions';
+import { Show, Season, Episode, Device, PlayOptions } from 'showveo-lib';
+import { SeasonService } from 'showveo-lib';
+import { EpisodeService } from 'showveo-lib';
+import { StringExtensions } from 'showveo-lib';
 
 import { Select, Option } from '@web/components/form/select';
 import Button from '@web/components/form/button';

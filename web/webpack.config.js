@@ -6,7 +6,8 @@ const devMode = true;//process.env.NODE_ENV !== 'production';
 
 module.exports = {
     mode: devMode ? 'development' : 'production',
-    entry: path.resolve(__dirname, './app.tsx'),
+    // entry: path.resolve(__dirname, './app.tsx'),
+    entry: path.resolve(__dirname, './test.ts'),
     output: {
         filename: 'app.bundle.js',
         publicPath: '/',
@@ -15,7 +16,6 @@ module.exports = {
     devtool: 'source-map',
     resolve: {
         alias: {
-            '@lib': path.resolve(__dirname, '../lib'),
             '@web': __dirname
         },
         extensions: [
@@ -26,8 +26,7 @@ module.exports = {
         ],
         modules: [
             './node_modules',
-            __dirname,
-            path.resolve(__dirname, '../lib')
+            __dirname
         ]
     },
     module: {
@@ -39,8 +38,7 @@ module.exports = {
                     path.resolve(__dirname, '../native')
                 ],
                 include: [
-                    __dirname,
-                    path.resolve(__dirname, '../lib')
+                    __dirname
                 ],
                 use: [
                     {

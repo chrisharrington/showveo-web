@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Navigation } from '@lib/models';
+import { Navigation } from 'showveo-lib';
 
 import './style.scss';
 

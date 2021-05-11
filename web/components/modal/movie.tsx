@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 
-import { Movie, Device, PlayOptions } from '@lib/models';
-import { StringExtensions } from '@lib/extensions';
+import { Movie, Device, PlayOptions } from 'showveo-lib';
+import { StringExtensions } from 'showveo-lib';
 
 import Modal from '@web/components/modal';
 import Metadata from '@web/components/metadata';

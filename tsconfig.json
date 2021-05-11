@@ -7,8 +7,7 @@
         "jsx": "react",
         "paths": {
             "@web/*": ["./web/*"],
-            "@native/*": ["./native/*"],
-            "@lib/*": ["./lib/*"]
+            "@native/*": ["./native/*"]
         },
         "sourceMap": true,
         "types": [
@@ -24,7 +23,8 @@
     "include": [
         "**/*.ts",
         "**/*.tsx",
-        "../../node_modules/@types/**/*.d.ts"
+        "./node_modules/@types/**/*.d.ts",
+        "./node_modules/showveo-lib/**/*.d.ts"
     ],
     "exclude": [
         "**/__tests__/**/*",

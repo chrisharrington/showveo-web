@@ -2,10 +2,9 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Row, Col } from 'react-grid-system';
 
-import { StringExtensions } from '@lib/extensions';
-import SeasonService from '@lib/data/seasons';
-import ShowService from '@lib/data/shows';
-import { Season, Show } from '@lib/models';
+import { StringExtensions } from 'showveo-lib';
+import { SeasonService, ShowService } from 'showveo-lib';
+import { Season, Show } from 'showveo-lib';
 
 import { Views } from '@web/views';
 

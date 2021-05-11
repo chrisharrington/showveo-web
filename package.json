@@ -1,7 +1,7 @@
 {
-  "name": "video-streamer-apps",
+  "name": "showveo-web",
   "version": "1.0.0",
-  "description": "A collection of front end applications for streaming video.",
+  "description": "A web front end for the Showveo application",
   "main": "index.js",
   "author": "Chris Harrington",
   "license": "MIT",
@@ -32,7 +32,8 @@
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^2.0.15",
     "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "showveo-lib": "chrisharrington/showveo-lib#1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -42,11 +43,11 @@
     "@types/react-native-navigation": "^2.0.0",
     "@types/react-native-orientation": "^5.0.1",
     "@types/react-native-video": "^5.0.0",
+    "@types/react-router": "^5.1.4",
+    "@types/react-router-dom": "^5.1.3",
     "@types/react-test-renderer": "16.9.1",
     "@typescript-eslint/eslint-plugin": "^2.12.0",
     "@typescript-eslint/parser": "^2.12.0",
-    "@types/react-router": "^5.1.4",
-    "@types/react-router-dom": "^5.1.3",
     "autoprefixer": "^9.7.3",
     "babel-jest": "^24.9.0",
     "cache-loader": "^4.1.0",

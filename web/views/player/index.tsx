@@ -3,10 +3,9 @@ import * as QueryString from 'query-string';
 
 import './style.scss';
 
-import { StringExtensions } from '@lib/extensions';
-import MovieService from '@lib/data/movies';
-import EpisodeService from '@lib/data/episodes';
-import { Playable, Status, Device } from '@lib/models';
+import { StringExtensions } from 'showveo-lib';
+import { EpisodeService, MovieService } from 'showveo-lib';
+import { Playable, Status, Device } from 'showveo-lib';
 
 const TIME_REMAINDER: number = 1000;
 

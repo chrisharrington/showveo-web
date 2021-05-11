@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Media } from '@lib/models';
+import { Media } from 'showveo-lib';
 
 import List from './list';
 

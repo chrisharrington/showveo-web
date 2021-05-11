@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Row, Col } from 'react-grid-system';
 
-import { StringExtensions } from '@lib/extensions';
-import { Episode } from '@lib/models';
-import EpisodeService from '@lib/data/episodes';
+import { StringExtensions } from 'showveo-lib';
+import { Episode } from 'showveo-lib';
+import { EpisodeService } from 'showveo-lib';
 
 import { Navigator, Views } from '@web/views';
 

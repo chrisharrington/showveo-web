@@ -3,13 +3,10 @@ import * as ReactDOM from 'react-dom';
 import { Location } from 'history';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
-import { StringExtensions } from '@lib/extensions';
-import { Movie, Show, PlayOptions, Castable, PlayableType, Navigation, Device, Episode, User } from '@lib/models';
-import MovieService from '@lib/data/movies';
-import ShowService from '@lib/data/shows';
-import DeviceService from '@lib/data/devices';
-import AuthService from '@lib/data/auth';
-import { HttpError, ErrorCode } from '@lib/errors';
+import { StringExtensions } from 'showveo-lib';
+import { Movie, Show, PlayOptions, Castable, PlayableType, Navigation, Device, Episode, User } from 'showveo-lib';
+import { MovieService, ShowService, DeviceService, AuthService } from 'showveo-lib';
+import { HttpError, ErrorCode } from 'showveo-lib';
 
 import Header from '@web/components/header';
 import Cast from '@web/components/cast';

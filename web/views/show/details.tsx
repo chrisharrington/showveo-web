@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Row, Col } from 'react-grid-system';
 
-import { StringExtensions } from '@lib/extensions';
-import { Show, Season } from '@lib/models';
+import { StringExtensions } from 'showveo-lib';
+import { Show, Season } from 'showveo-lib';
 
 import { Navigator, Views } from '@web/views';
 

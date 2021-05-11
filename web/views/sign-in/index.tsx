@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import AuthService from '@lib/data/auth';
-import { User } from '@lib/models';
+import { AuthService, User } from 'showveo-lib';
 
 import Text from '@web/components/form/text';
 import Button from '@web/components/form/button';

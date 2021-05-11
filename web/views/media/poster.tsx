@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Media } from '@lib/models';
+import { Media } from 'showveo-lib';
 
 export default class Poster extends React.Component<{ media: Media, width: number, onClick: () => void; }> {
     render() {
